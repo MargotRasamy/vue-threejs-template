@@ -10,7 +10,6 @@ import * as THREE from 'three'
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 // import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
-
 export default {
   name: 'Test',
   data () {
@@ -20,14 +19,14 @@ export default {
       camera: null,
       renderer: null,
       container: null,
-      geometry: null,
-      material: null,
-      cube: null
+      elements: {
+      }
     }
   },
 methods: {
   // Create an init method to set up the environnment
   init () {
+    
   // set container
     this.container = document.querySelector('.container')
 
@@ -44,21 +43,43 @@ methods: {
     this.renderer.setSize(this.container.clientWidth, this.container.clientHeight)
     this.container.appendChild(this.renderer.domElement)
 
-  // Create elements in the scene (geometry)
-    this.geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    this.material = new THREE.MeshBasicMaterial( {color: 0x00a1cb} );
-    this.cube = new THREE.Mesh(this.geometry, this.material );
-    this.scene.add(this.cube);
+  // Create elements in the scene
+
+    this.box(0, 0, 0, 1)
+    this.box(1, 1, 1, 1)
+    
 
   // Render everytime we have an update
     this.renderer.setAnimationLoop(() => {
       this.render()
-      this.cube.rotation.x += 0.01;
-      this.cube.rotation.y += 0.01;
+      let acc = 0.01
+      this.elements.cubes[0].rotation.y += acc
+      this.elements.cubes[1].rotation.y += acc
+   
+
     })
   },
   render () {
+    this.onWindowResize()
     this.renderer.render(this.scene, this.camera)
+  },
+  onWindowResize() {
+    this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+  },
+
+  box (id, xPos, yPos, zPos) {
+    let geometry = new THREE.BoxGeometry(1,1,1)
+    // let material = new THREE.MeshNormalMaterial({color: 0x00a1cb})
+    let material = new THREE.MeshNormalMaterial()
+    this.elements.cubes ? null : this.elements.cubes = []
+    this.elements.cubes[id] = new THREE.Mesh(geometry, material)
+    this.elements.cubes[id].position.x = xPos
+    this.elements.cubes[id].position.y = yPos
+    this.elements.cubes[id].position.z = zPos
+    this.scene.add(this.elements.cubes[id])
+    console.log(this.elements.cubes)
   }
 },
   mounted () {
@@ -74,10 +95,12 @@ methods: {
 .test {
     display: flex;
     margin: auto;
+    width: 70vw;
+    height: 70vh;
 }
 .container {    
-    width: 40rem;    
-    height:30rem;
+    width: 70vw;
+    height: 70vh;
     outline: none !important;
     margin: auto;  
 }
