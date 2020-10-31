@@ -1,13 +1,13 @@
 <template>
   <div class="main">
     <h1>{{ msg }}</h1>
-    <Robot/>
+    <Test/>
 
   </div>
 </template>
 
 <script>
-import Robot from '../models/characters/Robot'
+import Test from '../models/characters/Test'
 
 export default {
   name: 'Main',
@@ -15,7 +15,7 @@ export default {
     msg: String
   },
   components: {
-      Robot
+      Test
   }
 }
 </script>

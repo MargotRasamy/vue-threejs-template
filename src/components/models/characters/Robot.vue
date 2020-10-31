@@ -99,7 +99,6 @@ export default {
 
 
 .robot {
-    min-height: 100vh;
     display: flex;
 }
 .webgl {    
