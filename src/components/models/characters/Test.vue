@@ -45,18 +45,22 @@ methods: {
 
   // Create elements in the scene
 
-    this.box(0, 0, 0, 1)
-    this.box(1, 1, 1, 1)
+    this.box(0, 0, 0)
+    this.box(1, 1, 0)
     
+    this.ball(-2, 0, 0)
+    this.ball(0, 1, 0)
+    this.ball(0, -1, 0)
 
+    console.log(this.elements)
   // Render everytime we have an update
     this.renderer.setAnimationLoop(() => {
       this.render()
       let acc = 0.01
       this.elements.cubes[0].rotation.y += acc
       this.elements.cubes[1].rotation.y += acc
-   
-
+      this.elements.spheres[0].rotation.y += acc
+      this.elements.spheres[1].rotation.y += acc
     })
   },
   render () {
@@ -69,17 +73,28 @@ methods: {
     this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
   },
 
-  box (id, xPos, yPos, zPos) {
+  box (xPos, yPos, zPos) {
     let geometry = new THREE.BoxGeometry(1,1,1)
     // let material = new THREE.MeshNormalMaterial({color: 0x00a1cb})
     let material = new THREE.MeshNormalMaterial()
     this.elements.cubes ? null : this.elements.cubes = []
-    this.elements.cubes[id] = new THREE.Mesh(geometry, material)
-    this.elements.cubes[id].position.x = xPos
-    this.elements.cubes[id].position.y = yPos
-    this.elements.cubes[id].position.z = zPos
-    this.scene.add(this.elements.cubes[id])
-    console.log(this.elements.cubes)
+    this.elements.cubes.push(new THREE.Mesh(geometry, material)) 
+    this.elements.cubes[this.elements.cubes.length - 1].position.x = xPos
+    this.elements.cubes[this.elements.cubes.length - 1].position.y = yPos
+    this.elements.cubes[this.elements.cubes.length - 1].position.z = zPos
+    this.scene.add(this.elements.cubes[this.elements.cubes.length - 1]) 
+  },
+
+  ball (xPos, yPos, zPos) {
+    this.elements.spheres ? null : this.elements.spheres = []
+    let geometry = new THREE.SphereGeometry(0.5,8,8)
+    // let material = new THREE.MeshNormalMaterial({color: 0x00a1cb})
+    let material = new THREE.MeshNormalMaterial()
+    this.elements.spheres.push(new THREE.Mesh(geometry, material)) 
+    this.elements.spheres[this.elements.spheres.length - 1].position.x = xPos
+    this.elements.spheres[this.elements.spheres.length - 1].position.y = yPos
+    this.elements.spheres[this.elements.spheres.length - 1].position.z = zPos
+    this.scene.add(this.elements.spheres[this.elements.spheres.length - 1]) 
   }
 },
   mounted () {
